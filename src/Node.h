@@ -53,8 +53,6 @@ class CNode
 
 		CSelection find(std::string aSelector);
 
-	private:
-
 		GumboNode* mpNode;
 };
 
