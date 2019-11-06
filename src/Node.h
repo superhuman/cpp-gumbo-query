@@ -41,13 +41,21 @@ class CNode
 
 		unsigned int childNum();
 
-		CNode childAt(unsigned int i);
+		CNode childAt(size_t i);
 
 		std::string attribute(std::string key);
 
 		std::string text();
 
 		std::string ownText();
+
+		size_t startPos();
+
+		size_t endPos();
+
+		size_t startPosOuter();
+
+		size_t endPosOuter();
 
 		std::string tag();
 

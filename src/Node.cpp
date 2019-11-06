@@ -57,7 +57,7 @@ bool CNode::valid()
 	return mpNode != NULL;
 }
 
-CNode CNode::childAt(unsigned int i)
+CNode CNode::childAt(size_t i)
 {
 	if (mpNode->type != GUMBO_NODE_ELEMENT || i >= mpNode->v.element.children.length)
 	{
@@ -95,6 +95,58 @@ std::string CNode::text()
 std::string CNode::ownText()
 {
 	return CQueryUtil::nodeOwnText(mpNode);
+}
+
+size_t CNode::startPos()
+{
+	switch(mpNode->type)
+	{
+	  case GUMBO_NODE_ELEMENT:
+		  return mpNode->v.element.start_pos.offset + mpNode->v.element.original_tag.length;
+	  case GUMBO_NODE_TEXT:
+		  return mpNode->v.text.start_pos.offset;
+	  default:
+		  return 0;
+  }
+}
+
+size_t CNode::endPos()
+{
+	switch(mpNode->type)
+	{
+	  case GUMBO_NODE_ELEMENT:
+		  return mpNode->v.element.end_pos.offset;
+	  case GUMBO_NODE_TEXT:
+		  return mpNode->v.text.original_text.length + startPos();
+	  default:
+		  return 0;
+	}
+}
+
+size_t CNode::startPosOuter()
+{
+	switch(mpNode->type)
+	{
+	case GUMBO_NODE_ELEMENT:
+		return mpNode->v.element.start_pos.offset;
+	case GUMBO_NODE_TEXT:
+		return mpNode->v.text.start_pos.offset;
+	default:
+		return 0;
+	}
+}
+
+size_t CNode::endPosOuter()
+{
+	switch(mpNode->type)
+	{
+	case GUMBO_NODE_ELEMENT:
+		return mpNode->v.element.end_pos.offset + mpNode->v.element.original_end_tag.length;
+	case GUMBO_NODE_TEXT:
+		return mpNode->v.text.original_text.length + startPos();
+	default:
+		return 0;
+	}
 }
 
 std::string CNode::tag()
